@@ -1,0 +1,8 @@
+[submodule "auth-service"]
+	path = auth-service
+	url = https://github.com/Proyecto-Nuclear/auth-service-huahuacuna.git
+	branch = master
+[submodule "client-gateway"]
+	path = client-gateway
+	url = https://github.com/Proyecto-Nuclear/client-gateway-huahuacuna.git
+	branch = master
