@@ -1,0 +1,74 @@
+services:
+
+  ### PostgreSQL Database Users Services ###
+  huahuacuna_user_service_database:
+    image: postgres:latest
+    container_name: huahuacuna_user_service_database
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: user_service
+    ports:
+      - "54321:5432"
+    expose:
+      - "54321"
+    volumes:
+      - huahuacuna_user_service_data:/var/lib/postgresql/data
+    networks:
+      - huahuacuna-network
+
+  ### Apache Kafka Service ###
+  huahuacuna_kafka:
+    image: apache/kafka:latest
+    hostname: kafka
+    container_name: huahuacuna_kafka
+    ports:
+      - '9092:9092'
+      - '9093:9093'
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    environment:
+      KAFKA_CLUSTER_ID: "XJfPgrX_SBCiCeN0gcysnw"
+      CLUSTER_ID: "XJfPgrX_SBCiCeN0gcysnw"
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_NUM_PARTITIONS: 1
+      TZ: America/Bogota
+
+  ### Redis Service ###
+  huahuacuna_redis:
+    image: redis:latest
+    container_name: huahuacuna_redis
+    ports:
+      - "6379:6379"
+    environment:
+      - PASSWORD=
+    expose:
+      - 6379
+    volumes:
+      - huahuacuna_redis_data:/data
+    restart:
+      unless-stopped
+    networks:
+      - huahuacuna-network
+
+volumes:
+  huahuacuna_user_service_data:
+  kafka_data:
+  huahuacuna_redis_data:
+
+networks:
+  huahuacuna-network:
+    driver: bridge
