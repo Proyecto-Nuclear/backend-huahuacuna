@@ -18,6 +18,24 @@ services:
     networks:
       - huahuacuna-network
 
+  ### PostgreSQL Database Apadrinamiento Services ###
+  huahuacuna_apadrinamiento_service_database:
+    image: postgres:latest
+    container_name: huahuacuna_apadrinamiento_service_database
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: apadrinamiento_service
+    ports:
+      - "54322:5432"
+    expose:
+      - "54322"
+    volumes:
+      - huahuacuna_apadrinamiento_service_data:/var/lib/postgresql/data
+    networks:
+      - huahuacuna-network
+
   ### Apache Kafka Service ###
   huahuacuna_kafka:
     image: apache/kafka:latest
@@ -66,6 +84,7 @@ services:
 
 volumes:
   huahuacuna_user_service_data:
+  huahuacuna_apadrinamiento_service_data:
   kafka_data:
   huahuacuna_redis_data:
 
