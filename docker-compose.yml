@@ -54,6 +54,24 @@ services:
     networks:
       - huahuacuna-network
 
+  ### PostgreSQL Database Donaciones Services ###
+  huahuacuna_donaciones_service_database:
+    image: postgres:latest
+    container_name: huahuacuna_donaciones_service_database
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: donaciones_service
+    ports:
+      - "54324:5432"
+    expose:
+      - "54324"
+    volumes:
+      - huahuacuna_donaciones_service_data:/var/lib/postgresql/data
+    networks:
+      - huahuacuna-network
+
   ### Apache Kafka Service ###
   huahuacuna_kafka:
     image: apache/kafka:latest
@@ -104,6 +122,7 @@ volumes:
   huahuacuna_user_service_data:
   huahuacuna_apadrinamiento_service_data:
   huahuacuna_servicios_service_data:
+  huahuacuna_donaciones_service_data:
   kafka_data:
   huahuacuna_redis_data:
 
