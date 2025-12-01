@@ -118,6 +118,20 @@ services:
     networks:
       - huahuacuna-network
 
+  ### MailHog Service (Email Testing) ###
+  huahuacuna_mailhog:
+    image: mailhog/mailhog:latest
+    container_name: huahuacuna_mailhog
+    ports:
+      - "1025:1025"  # SMTP server
+      - "8025:8025"  # Web UI
+    expose:
+      - 1025
+      - 8025
+    restart: unless-stopped
+    networks:
+      - huahuacuna-network
+
 volumes:
   huahuacuna_user_service_data:
   huahuacuna_apadrinamiento_service_data:
